@@ -10,5 +10,6 @@
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
 <a href="start-quest">Start</a>
+<p>${message.getText()}</p>
 </body>
 </html>
