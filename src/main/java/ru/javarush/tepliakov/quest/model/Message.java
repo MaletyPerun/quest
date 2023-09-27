@@ -1,29 +1,25 @@
 package ru.javarush.tepliakov.quest.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.StandardException;
-
 import java.util.List;
 
 
 //@Getter
 //@Setter
-public class Question {
+public class Message {
 
     private static int count = 0;
 
     private int id = 0;
     private TypeMessege type;
     private String text;
-    private List<Question> answers;
+    private List<Integer> answers;
 
     public static long getCount() {
         return count;
     }
 
     public static void setCount(int count) {
-        Question.count = count;
+        Message.count = count;
     }
 
     public int getId() {
@@ -50,17 +46,25 @@ public class Question {
         this.text = text;
     }
 
-    public List<Question> getAnswers() {
+    public List<Integer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<Question> answers) {
+    public void setAnswers(List<Integer> answers) {
         this.answers = answers;
     }
 
-    public Question(int id, TypeMessege type, String text) {
+    public Message(int id, TypeMessege type, String text, List<Integer> answers) {
 //        this.id = count++;
         this.id = id;
+        this.type = type;
+        this.text = text;
+        this.answers = answers;
+    }
+
+    public Message(TypeMessege type, String text) {
+        this.id = count++;
+//        this.id = id;
         this.type = type;
         this.text = text;
     }

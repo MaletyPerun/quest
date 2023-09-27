@@ -4,8 +4,6 @@ import java.io.*;
 
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import ru.javarush.tepliakov.quest.model.Question;
-import ru.javarush.tepliakov.quest.model.TypeMessege;
 
 @WebServlet(name = "helloServlet", value = "/hello-servlet")
 public class HelloServlet extends HttpServlet {

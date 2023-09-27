@@ -1,11 +1,15 @@
 package ru.javarush.tepliakov.quest.repository;
 
-import ru.javarush.tepliakov.quest.model.Question;
+import ru.javarush.tepliakov.quest.model.Message;
+
+import java.util.List;
 
 public interface Repository {
 
     void init();
 
-    Question getById();
-    Question getById(int id);
+    Message getById();
+    Message getById(int id);
+
+    List<Message> getParentAndDescendant(int id);
 }
