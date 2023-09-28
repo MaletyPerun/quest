@@ -1,49 +1,58 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>JSP - Hello World</title>
-<%--    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-    <script src="<c:url value="/WEB-INF/js/jquery-3.6.0.min.js"/>"></script>
+    <title>Quest</title>
+    <meta charset="UTF-8"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="resources/css/style.css" rel="stylesheet">
+    <script src="/resources/js/state.js"></script>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="init">Hello Servlet</a>
-<a href="quest">Start</a>
-<p>${message.getText()}</p>
 
+<div>
+    <div class="prolog-div" id="prolog" style="display: block">
+        <%@ include file='/resources/jsp/modalStart.jsp' %>
+    </div>
 
-<%--модальное окно приветствия--%>
+    <div class="img-block" id="quest-img">
+        <img src="/resources/img/UFO.jpeg" alt="UFO">
+    </div>
 
-<%--модальное окно проигрыша--%>
+</div>
 
-<%--модальное окно победы--%>
-
-<%--модальное окно квеста--%>
-<%--    картинка--%>
-<%--    вопрос--%>
 <div class="main-window">
-    <span><${messages.get(0).getText()}></span>
-</div>
-<%--    блок вопросов--%>
-<div class="answers-block">
-    <div class="answer1">
-        <button onclick="window.location='/quest?button=1'">${button1}</button>
-    </div>
-    <div class="answer2">
-        <button onclick="window.location='/quest?button=2'">${button2}</button>
+    <span>${message}</span>
+    <div class="answers-block">
+        <div class="answer">
+            <button onclick="window.location='/quest?button=1'" class="btn btn-primary btn-large"
+                    style="visibility: ${button1visibility}">${button1}</button>
+        </div>
+        <div class="answer">
+            <button onclick="window.location='/quest?button=2'" class="btn btn-primary btn-large"
+                    style="visibility: ${button2visibility}">${button2}</button>
+        </div>
     </div>
 </div>
 
-<%--модальное окно статистики--%>
-
-<%--модальное окно рестарта--%>
-<div class="restart" style="visibility: ${restart}">
-    <a href="init" style="visibility: ${restart}">restart</a>
+<div class="restart main-window" id="reset-button" style="visibility: visible">
+    <a class="btn btn-primary" href="reset" onclick="myToggleStyle('prolog')">Начать заново</a>
 </div>
+<div class="main-window">
+    <button class="btn btn-primary" onclick="myToggleStyle('statistics')">статистика</button>
+    <div>
+        <div class="popup btn btn-primary" id="statistics" style="display: none">
+            <span>побед = ${winCount}</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = restoreState('prolog');
+    window.onload = restoreState('statistics');
+</script>
 
 </body>
 </html>

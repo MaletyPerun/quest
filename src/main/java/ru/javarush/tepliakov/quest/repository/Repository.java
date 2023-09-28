@@ -8,8 +8,5 @@ public interface Repository {
 
     void init();
 
-    Message getById();
-    Message getById(int id);
-
     List<Message> getParentAndDescendant(int id);
 }

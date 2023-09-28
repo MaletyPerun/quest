@@ -9,24 +9,10 @@ import java.util.List;
 public class QuestService {
 
     private Repository repository;
-    private String json = "";
     public void init() {
         repository = new RepositoryImpl();
-//        repository.init(json);
         repository.init();
-    };
-    public Message startSession() {
-        return repository.getById();
-    };
-    public void rememberUser() {};
-    public void showStatistic() {};
-    public void startQuest() {};
-    public Message printNext(int id) {
-        return repository.getById(id + 1);
-    };
-    public void printLeft() {};
-    public void restart() {};
-
+    }
     public List<Message> getNextNode(int id) {
         return repository.getParentAndDescendant(id);
     }

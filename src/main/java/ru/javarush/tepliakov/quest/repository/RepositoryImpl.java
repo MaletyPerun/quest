@@ -1,7 +1,6 @@
 package ru.javarush.tepliakov.quest.repository;
 
 import ru.javarush.tepliakov.quest.model.Message;
-import ru.javarush.tepliakov.quest.model.TreeNode;
 import ru.javarush.tepliakov.quest.model.TypeMessege;
 
 import java.util.ArrayList;
@@ -10,18 +9,7 @@ import java.util.List;
 
 public class RepositoryImpl implements Repository {
 
-    private TreeNode treeNode;
-
     private List<Message> questionList;
-
-//    @Override
-//    public void init(String json) {
-//        if (json == null) {
-//            init();
-//        }
-//    }
-
-
 
     public void init() {
         Message question1 = new Message(0, TypeMessege.QUESTION, "Ты потерял память Принять вызов НЛО?", List.of(1, 2));
@@ -32,7 +20,7 @@ public class RepositoryImpl implements Repository {
         Message question5 = new Message(4, TypeMessege.ANSWER, "Подняться на мостик", List.of(6));
         Message question6 = new Message(5, TypeMessege.LOOSE, "Отказаться подниматься на мостик", List.of(11));
 
-        Message question7 = new Message(6, TypeMessege.QUESTION, "Ты поднялся на мостик. Ты кто?", List.of(7 ,8));
+        Message question7 = new Message(6, TypeMessege.QUESTION, "Ты поднялся на мостик. Ты кто?", List.of(7, 8));
         Message question8 = new Message(7, TypeMessege.ANSWER, "Рассказать правду о себе", List.of(9));
         Message question9 = new Message(8, TypeMessege.LOOSE, "Солгать о себе", List.of(10));
 
@@ -55,16 +43,6 @@ public class RepositoryImpl implements Repository {
                 question11,
                 question12,
                 question13);
-    }
-
-    @Override
-    public Message getById() {
-        return questionList.get(0);
-    }
-
-    @Override
-    public Message getById(int id) {
-        return questionList.get(id);
     }
 
     @Override

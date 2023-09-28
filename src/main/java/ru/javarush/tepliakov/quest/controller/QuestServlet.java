@@ -2,7 +2,10 @@ package ru.javarush.tepliakov.quest.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import ru.javarush.tepliakov.quest.model.Message;
 import ru.javarush.tepliakov.quest.model.TypeMessege;
 import ru.javarush.tepliakov.quest.service.QuestService;
@@ -16,10 +19,7 @@ public class QuestServlet extends HttpServlet {
 
     private QuestService service;
 
-    private String message;
-
     public void init() {
-//        message = "It`s quest space";
         service = new QuestService();
         service.init();
     }
@@ -29,15 +29,12 @@ public class QuestServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-        if (session.isNew()) {
-//            setUp(session);
-        }
 
+        // извлечение значение из параметра button (?button=1)
         int param = getSelectedIndex(req);
-//        int param = updateList != null ? getSelectedIndex(req) : 0;
+        boolean isFinish = false;
 
-        // TODO: 27.09.2023 передавать точечно объекты
-          List<Message> currentList = extractCurrentList(session);
+        List<Message> currentList = extractCurrentList(session);
 
         if (param != 0) {
             Message message1 = currentList.get(param);
@@ -45,154 +42,79 @@ public class QuestServlet extends HttpServlet {
             currentList = service.getNextNode(nextQuestionId);
         }
 
+        Message message1 = currentList.get(0);
+
+        session.setAttribute("message", message1.getText());
+
         if (currentList.size() < 2 && currentList.get(0).getType() == TypeMessege.WIN) {
             session.setAttribute("win", true);
-            int winCount = (Integer) session.getAttribute("winCount");
+            int winCount = getCountWin(session);
             session.setAttribute("winCount", winCount + 1);
             session.setAttribute("restart", "visible");
+            isFinish = true;
         }
 
         if (currentList.size() < 2 && currentList.get(0).getType() == TypeMessege.LOOSE) {
             session.setAttribute("loose", true);
             session.setAttribute("restart", "visible");
+            isFinish = true;
+
         }
 
-        updateButtons(session, currentList);
+        updateButtons(session, currentList, isFinish);
 
 
-//        List<Message> list = service.getNextNode(0);
         session.setAttribute("messages", currentList);
+        session.setAttribute("newQuest", "hidden");
         resp.sendRedirect("/index.jsp");
-
-//        int id;
-//        List<Message> updateList = null;
-
-//        if (session.isNew()) {
-//            service.init();
-//            updateList = service.getNextNode(0);
-//            id = 0;
-//            Cookie cookie = new Cookie("messageId", String.valueOf(id));
-//            resp.addCookie(cookie);
-//        } else {
-//
-//        }
-
-        // как использовать параметр?
-//        int param = updateList != null ? getSelectedIndex(req) : 0;
-//        updateList = service.getNextNode(updateList.get(param).getId());
-//        session.setAttribute("messages", updateList);
-
-
-//        Cookie[] cookies = req.getCookies();
-//        String value = null;
-//
-//        if (cookies != null) {
-//            for (Cookie cookie :
-//                    cookies) {
-//                if (cookie.getName().equals("messageId")) {
-//                    value = cookie.getValue();
-//                }
-//            }
-//        }
-//
-//        if (value == null) {
-//            value = "0";
-//        }
-
-//        session = req.getSession();
-//        int messageId = Integer.parseInt(value);
-
-
-
-
-//        <a href="start-quest">Start</a>
-
-
-
-//        if (session.getAttribute("messages") == null) {
-//            Message startQuestion = service.startSession();
-//            session.setAttribute("messages", startQuestion);
-//        } else {
-//            Message question = (Message) session.getAttribute("messages");
-//            question = service.printNext(question.getId());
-//            session.setAttribute("messages", question);
-//        }
-
-
-
-        // для отображения скрытых объектов
-//        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
-
-        // для подгрузки новых значений
-//        resp.sendRedirect("/index.jsp");
-
     }
 
-    private void updateButtons(HttpSession session, List<Message> currentList) {
+    private void updateButtons(HttpSession session, List<Message> currentList, boolean isFinish) {
+        if (isFinish) {
+            session.setAttribute("button1", "");
+            session.setAttribute("button1visibility", "hidden");
+
+            session.setAttribute("button2", "");
+            session.setAttribute("button2visibility", "hidden");
+            return;
+        }
         if (currentList.size() < 2) {
             session.setAttribute("button1", currentList.get(0).getText());
-            session.setAttribute("button2", "");
-        }
-        else {
-            session.setAttribute("button1", currentList.get(1).getText());
-            session.setAttribute("button2", currentList.get(2).getText());
-        }
-    }
+            session.setAttribute("button1visibility", "visible");
 
-    private void setUp(HttpSession session) {
-        session.setAttribute("win", false);
-        session.setAttribute("loose", false);
-        session.setAttribute("winCount", 0);
-        session.setAttribute("restart", "hidden");
+            session.setAttribute("button2", "");
+            session.setAttribute("button2visibility", "hidden");
+
+        } else {
+            session.setAttribute("button1", currentList.get(1).getText());
+            session.setAttribute("button1visibility", "visible");
+
+            session.setAttribute("button2", currentList.get(2).getText());
+            session.setAttribute("button2visibility", "visible");
+
+        }
     }
 
     private List<Message> extractCurrentList(HttpSession session) {
-       Object list = session.getAttribute("messages");
-       if (list != null && ArrayList.class == list.getClass()) {
-           return (List<Message>) list;
-       } else
-           return service.getNextNode(0);
-    }
-
-//    private Field extractField(HttpSession currentSession) {
-//        Object fieldAttribute = currentSession.getAttribute("field");
-//        if (Field.class != fieldAttribute.getClass()) {
-//            logger.error("fieldAttribute is not Field class, invalidate session");
-//            currentSession.invalidate();
-//            throw new RuntimeException("Session is broken, try one more time");
-//        }
-//        return (Field) fieldAttribute;
-//    }
-
-//    private int getNextMessages(HttpSession session, int currentId) {
-//        if (session.getAttribute("messages") != null && (session.getAttribute("messages") instanceof List)) {
-//            List<Message> messages = (List<Message>) session.getAttribute("messages");
-//            return messages.get(0).getId();
-//        }
-//    }
-
-//    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        response.setContentType("text/html");
-//
-//        // Hello
-//        PrintWriter out = response.getWriter();
-//        out.println("<html><body>");
-//        out.println("<h1>" + message + "</h1>");
-//        out.println("</body></html>");
-//    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        Object list = session.getAttribute("messages");
+        if (list != null && ArrayList.class == list.getClass()) {
+            return (List<Message>) list;
+        } else
+            return service.getNextNode(0);
     }
 
     private int getSelectedIndex(HttpServletRequest req) {
         String click = String.valueOf(req.getParameter("button"));
         boolean isNumeric = click.chars().allMatch(Character::isDigit);
-//        logger.info("isNumeric : {}", isNumeric);
         return isNumeric ? Integer.parseInt(click) : 0;
     }
 
-    public void destroy() {
+    private int getCountWin(HttpSession session) {
+        Object count = session.getAttribute("winCount");
+        if (count == null) {
+            return 0;
+        } else {
+            return (Integer) count;
+        }
     }
 }
