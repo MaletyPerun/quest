@@ -8,12 +8,21 @@
 }
 
 .main-window {
-    margin: 0 auto;
+    margin: 20px auto;
     text-align: center;
 }
 
 .answer {
     display: inline-block;
+    margin: 20px 20px;
+}
+
+.modal-item {
+    margin: 20px 20px;
+}
+
+.button-start {
+    text-align: center;
 }
 
 .popup {
