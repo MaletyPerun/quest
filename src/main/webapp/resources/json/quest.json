@@ -1,0 +1,37 @@
+{
+  "question": "question 1",
+
+  "answer1": "answer 1",
+  "next1": {
+    "question": "question 2",
+
+    "answer1": "answer 1",
+    "next1": {
+      "question": "question 3",
+
+      "answer1": "answer 1",
+      "next1": {
+        "question": "finish-win",
+        "finish": "WIN"
+      },
+
+      "answer2": "answer 1",
+      "next2": {
+        "question": "finish-loose",
+        "finish": "LOOSE"
+      }
+    },
+
+    "answer2": "answer 2",
+    "next2": {
+      "question": "finish-loose",
+      "finish": "LOOSE"
+    }
+  },
+
+  "answer2": "answer 1",
+  "next2": {
+    "question": "finish-loose",
+    "finish": "LOOSE"
+  }
+}
