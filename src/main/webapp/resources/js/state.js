@@ -82,3 +82,4 @@ function showBlock2() {
     // Сохраняем состояние блоков в localStorage
     localStorage.setItem('blockState', 'hidden');
 }
+

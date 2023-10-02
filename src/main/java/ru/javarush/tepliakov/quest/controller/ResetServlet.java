@@ -35,11 +35,4 @@ public class ResetServlet extends HttpServlet {
 
         getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("ResetServlet doPost /reset");
-        req.getSession().invalidate();
-        resp.sendRedirect("/init");
-    }
 }

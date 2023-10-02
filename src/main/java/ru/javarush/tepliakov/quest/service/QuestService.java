@@ -22,7 +22,7 @@ public class QuestService {
     public void init() {
         repository = new RepositoryImpl();
         repository.init();
-        tree = makeQuestTree();
+//        tree = makeQuestTree();
     }
 
     private QuestTree makeQuestTree() {

@@ -21,18 +21,8 @@ public class InitServlet extends HttpServlet {
         logger.info("InitServlet doGet /init");
         HttpSession session = req.getSession(true);
 
-        session.setAttribute("win", false);
-        session.setAttribute("newQuest", "visible");
-        session.setAttribute("loose", false);
         session.setAttribute("winCount", 0);
-        session.setAttribute("restart", "hidden");
-        session.setAttribute("messages", null);
-        session.setAttribute("message", null);
-        session.setAttribute("button1", "");
-        session.setAttribute("button1visibility", "hidden");
-        session.setAttribute("button2", "");
-        session.setAttribute("button2visibility", "hidden");
 
-        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/reset").forward(req, resp);
     }
 }
